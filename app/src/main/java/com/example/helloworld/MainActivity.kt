@@ -13,14 +13,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val categories = listOf(
-            Category(R.drawable.tv, R.string.tv, Category.TV),
+            Category(R.drawable.ic_baseline_tv_24, R.string.tv, Category.TV),
             Category(R.drawable.baseline_local_laundry_service_24, R.string.wm, Category.WM),
             Category(R.drawable.closet, R.string.app_name, Category.CS),
-            Category(R.drawable.tv, R.string.app_name, Category.TV),
-            Category(R.drawable.tv, R.string.app_name, Category.TV),
+            Category(R.drawable.ic_baseline_tv_24, R.string.app_name, Category.TV),
+            Category(R.drawable.ic_baseline_tv_24, R.string.app_name, Category.TV),
         )
 
         findViewById<RecyclerView>(R.id.recycler).apply {
+            val offset = resources.getDimensionPixelOffset(R.dimen.size_4dp)
+            addItemDecoration(SquareItemDecoration(offset))
+
             adapter = categoryAdapter
             categoryAdapter.updateList(categories)
         }

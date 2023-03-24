@@ -5,73 +5,64 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class TVAdapter(private val onClick: (TV, Int) -> Unit) :
-    RecyclerView.Adapter<TVAdapter.ViewHolder>() {
-    private val currentList1 = mutableListOf<TV>()
+class TVAdapter(
+    private val onItemClick: (Element) -> Unit,
+    private val onAddClick: (Element) -> Unit,
+) : RecyclerView.Adapter<TVAdapter.ViewHolder>() {
+    private val currentList = mutableListOf<Element>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateListTV(newTVList: List<TV>) {
-        currentList1.clear()
-        currentList1.addAll(newTVList)
+    fun updateList(newElementList: List<Element>) {
+        currentList.clear()
+        currentList.addAll(newElementList)
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addToListTV(TV: TV) {
-        currentList1.add(TV)
-        notifyDataSetChanged()
-    }
+    class ViewHolder(
+        itemView: View,
+        onItemClick: (Element) -> Unit,
+        onAddClick: (Element) -> Unit,
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val container =
+            itemView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.container)
+        private val image = itemView.findViewById<ImageView>(R.id.img)
+        private val txtTitle = itemView.findViewById<TextView>(R.id.txt_title)
+        private val txtSubtitle = itemView.findViewById<TextView>(R.id.txt_subtitle)
+        private val txtPrice = itemView.findViewById<TextView>(R.id.txt_price)
+        private val btnAdd = itemView.findViewById<ImageView>(R.id.btn_add)
 
-    class ViewHolder(private val itemView: View, onClick: (TV, Int) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
-        private val imgCategory1: ImageView
-        private val txtCategory1: TextView
-        private val txtTv1: TextView
-        private val txtTV2: TextView
-        private var currentCategory1: TV? = null
-        private var currentPosition1: Int? = null
-
+        private var currentCategory: Element? = null
 
         init {
-            println("ViewHolder Initialized")
-            imgCategory1 = itemView.findViewById(R.id.flag)
-            txtCategory1 = itemView.findViewById(R.id.name)
-            txtTv1 = itemView.findViewById(R.id.subtitle)
-            txtTV2 = itemView.findViewById(R.id.price)
-
-            itemView.findViewById<LinearLayout>(R.id.container).setOnClickListener {
-                currentCategory1?.let {
-                    onClick(it, currentPosition1 ?: 0)
-                }
-
-            }
+            container.setOnClickListener { currentCategory?.let(onItemClick) }
+            btnAdd.setOnClickListener { currentCategory?.let(onAddClick) }
         }
 
-        fun onBind(TV: TV, position: Int) {
-            currentCategory1 = TV
-            currentPosition1 = position
-            Picasso.with(itemView.context).load(TV.imgRes).into(imgCategory1)
-            txtCategory1.setText(TV.titleRes)
-            txtTv1.setText(TV.rating.toString())
-            txtTV2.setText(TV.price)
+        fun onBind(element: Element) {
+            currentCategory = element
 
+            Picasso.with(itemView.context).load(element.imageUrl).into(image)
+            txtTitle.text = element.title
+            txtSubtitle.text =
+                "Телевизор Neo QLED выходит на новую ступень с технологией Quantum Matrix, которая управляет нашими новыми эксклюзивными светодиодами Quantum Mini. Благодаря точному управлению светом вы можете наслаждаться мельчайшими деталями как в самых темных, так и в самых ярких сценах."
+            txtPrice.text = element.price
         }
     }
 
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(p0.context).inflate(R.layout.listoftv, p0, false),
-            onClick,
+            LayoutInflater.from(p0.context).inflate(R.layout.item_element, p0, false),
+            onItemClick,
+            onAddClick
         )
     }
 
-    override fun getItemCount() = currentList1.size
+    override fun getItemCount() = currentList.size
 
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int) = p0.onBind(currentList1[p1], p1)
+    override fun onBindViewHolder(vh: ViewHolder, pos: Int) = vh.onBind(currentList[pos])
 }

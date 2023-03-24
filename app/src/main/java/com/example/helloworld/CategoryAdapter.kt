@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
 class CategoryAdapter(private val onClick: (Category, Int) -> Unit) :
@@ -20,24 +19,20 @@ class CategoryAdapter(private val onClick: (Category, Int) -> Unit) :
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addToList(category: Category) {
-        currentList.add(category)
-        notifyDataSetChanged()
-    }
+    class ViewHolder(
+        itemView: View,
+        onClick: (Category, Int) -> Unit,
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val container =
+            itemView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.container)
+        private val image = itemView.findViewById<ImageView>(R.id.img)
+        private val text = itemView.findViewById<TextView>(R.id.txt)
 
-    class ViewHolder(itemView: View, onClick: (Category, Int) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
-        private val imgCategory: ImageView
-        private val txtCategory: TextView
         private var currentCategory: Category? = null
         private var currentPosition: Int? = null
 
         init {
-            println("ViewHolder Initialized")
-            imgCategory = itemView.findViewById(R.id.flag)
-            txtCategory = itemView.findViewById(R.id.name)
-            itemView.findViewById<ConstraintLayout>(R.id.container).setOnClickListener {
+            container.setOnClickListener {
                 currentCategory?.let {
                     onClick(it, currentPosition ?: 0)
                 }
@@ -47,15 +42,15 @@ class CategoryAdapter(private val onClick: (Category, Int) -> Unit) :
         fun onBind(category: Category, position: Int) {
             currentCategory = category
             currentPosition = position
-            imgCategory.setImageResource(category.imgRes)
-            txtCategory.setText(category.titleRes)
+            image.setImageResource(category.imgRes)
+            text.setText(category.titleRes)
         }
     }
 
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(p0.context).inflate(R.layout.list, p0, false),
+            LayoutInflater.from(p0.context).inflate(R.layout.item_category, p0, false),
             onClick,
         )
     }

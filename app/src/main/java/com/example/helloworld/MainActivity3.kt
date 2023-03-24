@@ -29,16 +29,16 @@ class MainActivity3 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
 
-        val p = intent.serializable<TV>("profile")
+        val p = intent.serializable<Element>("profile")
         println(p)
         findViewById<ImageView>(R.id.flag).apply {
-            Picasso.with(this@MainActivity3).load(p?.imgRes).into(this)
+            Picasso.with(this@MainActivity3).load(p?.imageUrl).into(this)
         }
         findViewById<TextView>(R.id.name).apply {
 //            if (p != null) {
 //                setText(p.titleRes)
 //            }
-            p?.titleRes?.let(this::setText)
+            p?.title?.let(this::setText)
         }
         findViewById<TextView>(R.id.subtitle).apply {
             p?.rating?.toString()?.let(this::setText)
