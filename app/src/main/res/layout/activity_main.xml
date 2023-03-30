@@ -24,10 +24,6 @@
             android:text="Shop"
             android:textSize="30dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            tools:src="@tools:sample/avatars" />
 
     </androidx.appcompat.widget.Toolbar>
 

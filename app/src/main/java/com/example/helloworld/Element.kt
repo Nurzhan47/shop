@@ -7,4 +7,5 @@ data class Element(
     val title: String,
     val rating: Int,
     val price: String,
+
 ) : Serializable

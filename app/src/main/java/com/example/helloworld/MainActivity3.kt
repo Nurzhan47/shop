@@ -32,7 +32,7 @@ class MainActivity3 : AppCompatActivity() {
         val p = intent.serializable<Element>("profile")
         println(p)
         findViewById<ImageView>(R.id.flag).apply {
-            Picasso.with(this@MainActivity3).load(p?.imageUrl).into(this)
+            Picasso.get().load(p?.imageUrl).into(this)
         }
         findViewById<TextView>(R.id.name).apply {
 //            if (p != null) {
