@@ -1,8 +1,6 @@
 package com.example.helloworld
 
 import android.util.Log
-import com.example.helloworld.remote.DogService
-import com.example.helloworld.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,15 +40,10 @@ object NetworkModule {
         gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl("")
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
     }
-
-    @Singleton
-    @Provides
-    fun provideCurrencyService(retrofit: Retrofit): DogService =
-        retrofit.create(DogService::class.java)
 
 }

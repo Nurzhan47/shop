@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.squareup.picasso.Picasso
+import coil.load
 import java.io.Serializable
 
 
@@ -32,7 +32,9 @@ class MainActivity3 : AppCompatActivity() {
         val p = intent.serializable<Element>("profile")
         println(p)
         findViewById<ImageView>(R.id.flag).apply {
-            Picasso.get().load(p?.imageUrl).into(this)
+            load(p?.imageUrl) {
+                crossfade(true)
+            }
         }
         findViewById<TextView>(R.id.name).apply {
 //            if (p != null) {

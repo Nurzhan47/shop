@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import coil.load
 
 class TVAdapter(
     private val onItemClick: (Element) -> Unit,
@@ -45,7 +45,9 @@ class TVAdapter(
         fun onBind(element: Element) {
             currentCategory = element
 
-            Picasso.get().load(element.imageUrl).into(image)
+            image.load(element.imageUrl) {
+                crossfade(true)
+            }
             txtTitle.text = element.title
             txtSubtitle.text =
                 "Телевизор Neo QLED выходит на новую ступень с технологией Quantum Matrix, которая управляет нашими новыми эксклюзивными светодиодами Quantum Mini. Благодаря точному управлению светом вы можете наслаждаться мельчайшими деталями как в самых темных, так и в самых ярких сценах."
